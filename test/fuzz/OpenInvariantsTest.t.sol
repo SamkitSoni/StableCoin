@@ -47,4 +47,15 @@ contract OpenInvariantsTest is StdInvariant, Test {
         uint256 wbtcValue = dscEngine.getUSDValue(wbtc, totalBtcDeposited);
         assert((wethValue + wbtcValue) >= totalSupply);
     }
+
+    // function invariant_getterShouldntRevert() public view {
+    //     //get the value of all the collateral in the protocol
+    //     //compare it to all the debt (dsc)
+    //     address[] memory collateralTokens = dscEngine.getCollateralTokens();
+    //         dscEngine.getCollateralValue(collateralTokens[i]);
+    //         dscEngine.getAccountInformation(msg.sender);
+    //         dscEngine.getCollateralTokens();
+    //         dscEngine.getTokenAmountFromUsd(collateralTokens[i], 1 ether);
+    //         dscEngine.getUSDValue(collateralTokens[i], 1 ether);
+    // }
 }

@@ -7,6 +7,8 @@ import {DecentralizedStableCoin} from "../../src/DecentralizedStableCoin.sol";
 import {DSCEngine} from "../../src/DSCEngine.sol";
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
 import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
+import {MockV3Aggregator} from "@chainlink/contracts/src/v0.8/tests/MockV3Aggregator.sol";
+
 
 contract DSCEngineTest is Test {
     DeployDSC deployer;
@@ -22,11 +24,15 @@ contract DSCEngineTest is Test {
     uint256 public constant STARTING_ERC20_BAL = 10 ether;
 
     function setUp() public {
-        deployer = new DeployDSC();
-        (dscEngine, dsc, helperConfig) = deployer.run();
-        (ethUsdPriceFeed,, weth,,) = helperConfig.activeNetworkConfig();
-        ERC20Mock(weth).mint(USER, STARTING_ERC20_BAL);
-    }
+    deployer = new DeployDSC();
+    (dscEngine, dsc, helperConfig) = deployer.run();
+    (ethUsdPriceFeed, btcUsdPriceFeed, weth,,) = helperConfig.activeNetworkConfig();
+    ERC20Mock(weth).mint(USER, STARTING_ERC20_BAL);
+
+    // Set mock price feed values
+    MockV3Aggregator(ethUsdPriceFeed).updateAnswer(2000e8); // ETH price = $2000
+    MockV3Aggregator(btcUsdPriceFeed).updateAnswer(30000e8); // BTC price = $30,000
+}
 
     address[] public tokenAddresses;
     address[] public priceFeedAddresses;
